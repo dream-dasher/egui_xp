@@ -9,7 +9,6 @@
 style_edition = "2024"
 unstable_features = true
 
-
 ## general spacing
 max_width = 120
 tab_spaces = 8                       # legible groups! :)
@@ -21,7 +20,6 @@ struct_variant_width = 120           # enum struct variant instantiation
 single_line_if_else_max_width = 120  # ¡doesn't always work!
 single_line_let_else_max_width = 120 # ¡doesn't always work!
 # fn_single_line = true              # creates false "unnecessary braces" lint
-
 
 ## import organization
 imports_granularity = "Crate"      # group all imports for a crate together
@@ -35,3 +33,6 @@ use_field_init_shorthand = true   # let _ = some_struct {x, y, z}
 
 ## impl organization
 reorder_impl_items = true # assoc_type & const at top of impl
+
+## macros
+format_macro_bodies = false
