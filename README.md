@@ -36,7 +36,7 @@ aka                           aka                          aka                  
 
 # egui
 
-- **what**: with*in* Rust library for doig GUI-like data actions
+- **what**: with*in* Rust library for doing GUI-like data actions
   - The main thing the programmer works with, but that gets and gives data via an umbilical "framework" that can translate to the machine/systems language that generates images, provides inputs, etc.
 
 ```markdown
