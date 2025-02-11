@@ -1,3 +1,5 @@
+use egui::{Key, ScrollArea};
+
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
@@ -65,6 +67,28 @@ impl eframe::App for TemplateApp {
                         });
                 });
 
+                egui::SidePanel::right("input panel").show(ctx, |ui| {
+                        ui.heading("Pres/Hold/Release example. Press A to test.");
+                        if ui.button("Clear").clicked() {
+                                self.label.clear();
+                        }
+                        ScrollArea::vertical()
+                                .auto_shrink(false)
+                                .stick_to_bottom(true)
+                                .show(ui, |ui| {
+                                        ui.monospace(format!("{:?}", self.label));
+                                });
+                        if ctx.input(|i| i.key_pressed(Key::A)) {
+                                self.label.push_str("\nPressed");
+                        }
+                        if ctx.input(|i| i.key_down(Key::A)) {
+                                self.label.push_str("\nHeld");
+                                ui.ctx().request_repaint(); // make sure we note the holding.
+                        }
+                        if ctx.input(|i| i.key_released(Key::A)) {
+                                self.label.push_str("\nReleased");
+                        }
+                });
                 egui::CentralPanel::default().show(ctx, |ui| {
                         // The central panel the region left after adding TopPanel's and SidePanel's
                         ui.heading("Egui Xp");

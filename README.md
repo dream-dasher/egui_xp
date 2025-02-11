@@ -26,7 +26,7 @@ aka                           aka                          aka                  
 | eframe          | eframe::`run_simple_native` | (Centra/Side/TopBottom)Panel | ui.horizontal |
 | bevy_egui       |    eframe::`run_native`     |          ScrollArea          |      ui.label |
 |                 |                             |            Window            |     ui.slider |
-| ...             |             ...             |             ...              |    ui.button  |
+| ...             |             ...             |             Area             |    ui.button  |
 | ...             |             ...             |             ...              |           ... |
 
 - [Context](file:///Users/esl/coding_dirs/rust/egui_xp/target/doc/egui/struct.Context.html)
