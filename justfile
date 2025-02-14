@@ -43,13 +43,13 @@ Commands can be inspected in the currently invoked `justfile`.
 
 -- Confirm initialization?'
 )]
-init: && list-external-deps _gen-env _gen-git-hooks _external-wasm-installs _rustup-component-installs
+init: && list-external-deps _gen-env _gen-git-hooks _external-wasm-installs _rustup-component-installs _date
     cargo clean
     cargo build
     cargo doc --all-features --document-private-items
 
 # Linting, formatting, typo checking, etc.
-check: && test
+check: && test _date
     cargo check --workspace --all-targets --all-features
     cargo check --workspace --all-features --lib --target wasm32-unknown-unknown
     cargo clippy --workspace --all-targets --all-features
@@ -58,7 +58,7 @@ check: && test
     typos
 
 # Show docs.
-docs:
+docs: && _date
     rustup doc
     rustup doc --std
     cargo doc --all-features --document-private-items --open
@@ -75,7 +75,7 @@ web-local:
     trunk serve
 
 # Add a package to workspace // adds and removes a bin to update workspace package register
-packadd name:
+packadd name: && _date
     cargo new --bin {{name}}
     rm -rf {{name}}
     cargo generate --path ./.support_data/cargo_generate_templates/_template__new_package --name {{name}}
@@ -83,25 +83,25 @@ packadd name:
 
 # All tests, little feedback unless issues are detected.
 [group('test')]
-test:
+test: && _date
     cargo test --workspace --doc
     cargo nextest run --cargo-quiet --cargo-quiet --no-fail-fast --all-targets
 
 # Runtests for a specific package.
 [group('test')]
-testp package="":
+testp package="": && _date
     cargo test --doc --quiet --package {{package}}
     cargo nextest run --cargo-quiet --cargo-quiet --all-targets --package {{package}} --no-fail-fast
 
 # Run a specific test with output visible. (Use '' for test_name to see all tests and set log_level)
 [group('test')]
-test-view test_name="" log_level="error":
+test-view test_name="" log_level="error": && _date
     @echo "'Fun' Fact; the '--test' flag only allows integration test selection and will just fail on unit tests."
     RUST_LOG={{log_level}} cargo test {{test_name}} -- --nocapture
 
 # Run a specific test with NEXTEST with output visible. (Use '' for test_name to see all tests and set log_level)
 [group('test')]
-testnx-view test_name="" log_level="error":
+testnx-view test_name="" log_level="error": && _date
     @echo "'Fun' Fact; the '--test' flag only allows integration test selection and will just fail on unit tests."
     J_RUST_LOG={{log_level}} cargo nextest run {{test_name}} --no-capture --no-fail-fast
 
@@ -113,14 +113,14 @@ test-whisper:
 
 # Run performance analysis on a package.
 [group('perf')]
-perf package *args:
+perf package *args: && _date
     cargo build --profile profiling --bin {{package}};
     hyperfine --export-markdown=.output/profiling/{{package}}_hyperfine_profile.md './target/profiling/{{package}} {{args}}' --warmup=3 --shell=none;
     samply record --output=.output/profiling/{{package}}_samply_profile.json --iteration-count=3 ./target/profiling/{{package}} {{args}};
 
 # Possible future perf compare command.
 [group('perf')]
-perf-compare-info:
+perf-compare-info: && _date
     @echo "Use hyperfine directly:\n{{GRN}}hyperfine{{NC}} {{BRN}}'cmd args'{{NC}} {{BRN}}'cmd2 args'{{NC}} {{PRP}}...{{NC}} --warmup=3 --shell=none"
 
 
@@ -137,11 +137,18 @@ rust-meta-info:
     rust-analyzer --version
     cargo-clippy --version
     rustup --version
+
 # ######################################################################## #
 
 # Print reminder: how to set env vars that propagate to child shells.
 _remind-setenv:
     @ echo '{{GRN}}set -a{{NC}}; {{GRN}}source {{BLU}}.env{{NC}}; {{GRN}}set +a{{NC}}'
+
+# ######################################################################## #
+
+# print date and time
+_date:
+    date
 
 # ######################################################################## #
 
