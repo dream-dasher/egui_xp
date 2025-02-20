@@ -2,11 +2,11 @@ use eframe::egui;
 
 fn main() {
         let native_options = eframe::NativeOptions::default();
-        eframe::run_native("My egui App", native_options, Box::new(|cc| Ok(Box::new(MyEguiApp::new(cc))))).unwrap();
+        eframe::run_native("My egui App", native_options, Box::new(|cc| Ok(Box::new(TwoNumCalc::new(cc))))).unwrap();
 }
 
 #[derive(Default)]
-struct MyEguiApp {
+struct TwoNumCalc {
         left:       Option<i32>,
         right:      Option<i32>,
         out:        Option<i32>,
@@ -14,7 +14,7 @@ struct MyEguiApp {
         right_text: String,
 }
 
-impl MyEguiApp {
+impl TwoNumCalc {
         #[expect(unused)]
         fn new(cc: &eframe::CreationContext<'_>) -> Self {
                 // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
@@ -25,7 +25,7 @@ impl MyEguiApp {
         }
 }
 
-impl eframe::App for MyEguiApp {
+impl eframe::App for TwoNumCalc {
         #[expect(unused)]
         fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
                 // -- Menu Bar --
