@@ -11,7 +11,7 @@ use eframe::egui;
 // ///////////////////////////////// -main- ///////////////////////////////// //
 fn main() {
         let native_options = eframe::NativeOptions::default();
-        eframe::run_native("Clipboard Test", native_options, Box::new(|cc| Ok(Box::new(ClipboardTest::new((cc))))))
+        eframe::run_native("Clipboard Test", native_options, Box::new(|cc| Ok(Box::new(ClipboardTest::new(cc)))))
                 .unwrap();
 }
 
@@ -81,6 +81,7 @@ impl ClipboardTest {
 
 // ///////////////////////////////// -Core Loop- ///////////////////////////////// //
 impl eframe::App for ClipboardTest {
+        #[expect(unused)]
         fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
                 egui::CentralPanel::default().show(ctx, |ui| self.ui(ui));
         }
