@@ -1,14 +1,21 @@
+//! Text to num calculator that adjusts values regularly based on message passed from another thread.
+//! Just here to play with pieces.
+
+// ///////////////////////////////// -use- ///////////////////////////////// //
 use std::{sync::mpsc::{self, Receiver},
           thread,
           time::Duration};
 
 use eframe::egui;
 
+// ///////////////////////////////// -main- ///////////////////////////////// //
 fn main() {
         let native_options = eframe::NativeOptions::default();
         eframe::run_native("My egui App", native_options, Box::new(|cc| Ok(Box::new(TwoNumCalc::new(cc))))).unwrap();
 }
 
+// ///////////////////////////////// -App Memory- ///////////////////////////////// //
+//                                     and init
 #[derive(Default)]
 struct TwoNumCalc {
         left:           Option<i32>,
@@ -28,6 +35,7 @@ impl TwoNumCalc {
                 // for e.g. egui::PaintCallback.
                 let (tx, rx) = mpsc::channel();
 
+                // ............................ -create separate running thread at init- ............................ //
                 thread::spawn(move || {
                         loop {
                                 thread::sleep(Duration::from_millis(3000));
@@ -41,14 +49,16 @@ impl TwoNumCalc {
                         }
                 });
 
+                // ............................ -set starting app memory state- ............................ //
                 Self { receiver: Some(rx), ..Default::default() }
         }
 }
 
+// ///////////////////////////////// -Core Loop- ///////////////////////////////// //
 impl eframe::App for TwoNumCalc {
         #[expect(unused)]
         fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
-                // check for messages
+                // ............................ -check for messages- ............................ //
                 if let Some(receiver) = &self.receiver {
                         if receiver.try_recv().is_ok() {
                                 if let (Some(left), Some(right)) = (self.left, self.right) {
@@ -62,6 +72,7 @@ impl eframe::App for TwoNumCalc {
                                 }
                         }
                 }
+                // ............................ -regular rendering- ............................ //
                 // -- Menu Bar --
                 egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
                         egui::menu::bar(ui, |ui| {

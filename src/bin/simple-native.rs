@@ -1,16 +1,21 @@
+//! Very simple, native-only, egui implementation in a single file.
+
+// ///////////////////////////////// -use- ///////////////////////////////// //
 use eframe::egui;
 
+// ///////////////////////////////// -main- ///////////////////////////////// //
 fn main() {
         let native_options = eframe::NativeOptions::default();
         eframe::run_native("My egui App", native_options, Box::new(|cc| Ok(Box::new(SimpleEguiApp::new(cc))))).unwrap();
 }
 
+// ///////////////////////////////// -App Memory- ///////////////////////////////// //
+//                                     and init
 #[derive(Default)]
 struct SimpleEguiApp {
-        left_text:  String,
-        right_text: String,
+        text_one: String,
+        text_two: String,
 }
-
 impl SimpleEguiApp {
         #[expect(unused)]
         fn new(cc: &eframe::CreationContext<'_>) -> Self {
@@ -22,6 +27,7 @@ impl SimpleEguiApp {
         }
 }
 
+// ///////////////////////////////// -Core Loop- ///////////////////////////////// //
 impl eframe::App for SimpleEguiApp {
         #[expect(unused)]
         fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
@@ -41,6 +47,11 @@ impl eframe::App for SimpleEguiApp {
                 // -- Input and Results Strip --
                 egui::CentralPanel::default().show(ctx, |ui| {
                         ui.heading("Simple Native Example App");
+                        ui.label("text-one");
+                        ui.text_edit_singleline(&mut self.text_one);
+                        ui.separator();
+                        ui.label("text-two");
+                        ui.text_edit_multiline(&mut self.text_two);
                 });
         }
 }
