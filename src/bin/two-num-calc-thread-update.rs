@@ -1,3 +1,7 @@
+use std::{sync::mpsc::{self, Receiver},
+          thread,
+          time::Duration};
+
 use eframe::egui;
 
 fn main() {
@@ -13,6 +17,7 @@ struct TwoNumCalc {
         left_text:      String,
         right_text:     String,
         show_clear_box: bool,
+        receiver:       Option<Receiver<()>>,
 }
 impl TwoNumCalc {
         #[expect(unused)]
@@ -21,13 +26,42 @@ impl TwoNumCalc {
                 // Restore app state using cc.storage (requires the "persistence" feature).
                 // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
                 // for e.g. egui::PaintCallback.
-                Self::default()
+                let (tx, rx) = mpsc::channel();
+
+                thread::spawn(move || {
+                        loop {
+                                thread::sleep(Duration::from_millis(3000));
+                                // send and check
+                                // **NOTE**: we're sending a null signal - sending is the signal...
+                                if tx.send(()).is_err() {
+                                        println!("Failed to send message");
+                                } else {
+                                        println!("Send is still good.");
+                                }
+                        }
+                });
+
+                Self { receiver: Some(rx), ..Default::default() }
         }
 }
 
 impl eframe::App for TwoNumCalc {
         #[expect(unused)]
         fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+                // check for messages
+                if let Some(receiver) = &self.receiver {
+                        if receiver.try_recv().is_ok() {
+                                if let (Some(left), Some(right)) = (self.left, self.right) {
+                                        self.left = Some(left - 1);
+                                        self.right = Some(right + 1);
+                                        self.left_text = self.left.unwrap().to_string();
+                                        self.right_text = self.right.unwrap().to_string();
+                                        // **NOTE**: we need to request repaint if we want UI to update even if we're not otherwise interacting with it.
+                                        ctx.request_repaint();
+                                        // ctx.request_repaint_after(Duration::from_millis(100)); // if there's no other interaction 100ms seems to result in faster update than just repaint alone...
+                                }
+                        }
+                }
                 // -- Menu Bar --
                 egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
                         egui::menu::bar(ui, |ui| {
