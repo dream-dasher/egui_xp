@@ -6,7 +6,16 @@ use eframe::egui;
 // ///////////////////////////////// -main- ///////////////////////////////// //
 fn main() {
         let native_options = eframe::NativeOptions::default();
-        eframe::run_native("My egui App", native_options, Box::new(|cc| Ok(Box::new(SimpleEguiApp::new(cc))))).unwrap();
+        eframe::run_native(
+                "My egui App",
+                native_options,
+                Box::new(|cc| {
+                        // required to use images - file, http, image, svg
+                        egui_extras::install_image_loaders(&cc.egui_ctx);
+                        Ok(Box::new(SimpleEguiApp::new(cc)))
+                }),
+        )
+        .unwrap();
 }
 
 // ///////////////////////////////// -App Memory- ///////////////////////////////// //
@@ -15,6 +24,7 @@ fn main() {
 struct SimpleEguiApp {
         text_one: String,
         text_two: String,
+        crab:     bool,
 }
 impl SimpleEguiApp {
         #[expect(unused)]
@@ -52,6 +62,31 @@ impl eframe::App for SimpleEguiApp {
                         ui.separator();
                         ui.label("text-two");
                         ui.text_edit_multiline(&mut self.text_two);
+                        if ui.button("crab!").clicked() {
+                                self.crab = match self.crab {
+                                        true => false,
+                                        false => true,
+                                };
+                        }
+                        if self.crab {
+                                ui.image(egui::include_image!("../../assets/exampleimage-ferris.gif"));
+                        }
+                });
+
+                // if self.crab {
+                //         egui::Modal::new("hi".into()).show(ctx, |ui| {
+                //                 ui.image(egui::include_image!("../../assets/exampleimage-ferris.gif"));
+                //         });
+                // }
+                egui::SidePanel::right("right_panel").show(ctx, |ui| {
+                        ui.heading("Right Panel");
+                        ui.label("Example Image");
+                        egui::ScrollArea::both().show(ui, |ui| {
+                                ui.image(egui::include_image!("../../assets/exampleimage-cat.webp"));
+                        });
+                        // egui::ScrollArea::both().show(ui, |ui| {
+                        //         ui.image(egui::include_image!("../../assets/exampleimage-ferris.svg"));
+                        // });
                 });
         }
 }
