@@ -44,7 +44,7 @@ use std::io;
 
 use derive_more::{Display, Error, From};
 use tracing::{instrument, subscriber::SetGlobalDefaultError};
-use tracing_error::SpanTrace;
+// use tracing_error::SpanTrace;
 
 // use derive_more::{Display, Error, derive::From};
 #[derive(Debug, Display, From, Error)]
@@ -79,16 +79,17 @@ impl ErrKind {
         }
 }
 
-#[derive(Display, Error, From)]
+#[derive(Display, Error)]
 #[display(
-        "error: {:#}\n\n\nspantrace capture: {:?}\n\n\nspantrace: {:#}",
+        // "error: {:#}\n\n\nspantrace capture: {:?}\n\n\nspantrace: {:#}",
+        "{}",
         source,
-        spantrace.status(),
-        spantrace,
+        // spantrace.status(),
+        // spantrace,
 )]
 pub struct ErrorWrapper {
-        pub source:    ErrKind,
-        pub spantrace: tracing_error::SpanTrace,
+        pub source: ErrKind,
+        // pub spantrace: tracing_error::SpanTrace,
         // backtrace: backtrace::Backtrace,
 }
 // Using custom display as debug so we can get SpanTrace auto printed.
@@ -105,8 +106,8 @@ where
         #[instrument(skip_all)]
         fn from(error: T) -> Self {
                 Self {
-                        source:    error.into(),
-                        spantrace: SpanTrace::capture(),
+                        source: error.into(),
+                        // spantrace: SpanTrace::capture(),
                         // backtrace: backtrace::Backtrace::capture(),
                 }
         }
