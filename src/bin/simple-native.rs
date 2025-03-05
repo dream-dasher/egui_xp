@@ -63,10 +63,7 @@ impl eframe::App for SimpleEguiApp {
                         ui.label("text-two");
                         ui.text_edit_multiline(&mut self.text_two);
                         if ui.button("crab!").clicked() {
-                                self.crab = match self.crab {
-                                        true => false,
-                                        false => true,
-                                };
+                                self.crab = !self.crab; // toggle
                         }
                         if self.crab {
                                 ui.image(egui::include_image!("../../assets/exampleimage-ferris.gif"));
