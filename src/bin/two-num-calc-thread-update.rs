@@ -2,9 +2,11 @@
 //! Just here to play with pieces.
 
 // ///////////////////////////////// -use- ///////////////////////////////// //
-use std::{sync::mpsc::{self, Receiver},
-          thread,
-          time::Duration};
+use std::{
+        sync::mpsc::{self, Receiver},
+        thread,
+        time::Duration,
+};
 
 use eframe::egui;
 
@@ -18,13 +20,13 @@ fn main() {
 //                                     and init
 #[derive(Default)]
 struct TwoNumCalc {
-        left:           Option<i32>,
-        right:          Option<i32>,
-        out:            Option<i32>,
-        left_text:      String,
-        right_text:     String,
+        left: Option<i32>,
+        right: Option<i32>,
+        out: Option<i32>,
+        left_text: String,
+        right_text: String,
         show_clear_box: bool,
-        receiver:       Option<Receiver<()>>,
+        receiver: Option<Receiver<()>>,
 }
 impl TwoNumCalc {
         #[expect(unused)]

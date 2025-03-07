@@ -272,30 +272,30 @@ impl eframe::App for TableDemo {
 
 /// Shows off a table with dynamic layout
 pub struct TableDemo {
-        demo:                 DemoType,
-        striped:              bool,
-        resizable:            bool,
-        clickable:            bool,
-        num_rows:             usize,
+        demo: DemoType,
+        striped: bool,
+        resizable: bool,
+        clickable: bool,
+        num_rows: usize,
         scroll_to_row_slider: usize,
-        scroll_to_row:        Option<usize>,
-        selection:            std::collections::HashSet<usize>,
-        checked:              bool,
-        reversed:             bool,
+        scroll_to_row: Option<usize>,
+        selection: std::collections::HashSet<usize>,
+        checked: bool,
+        reversed: bool,
 }
 impl Default for TableDemo {
         fn default() -> Self {
                 Self {
-                        demo:                 DemoType::Manual,
-                        striped:              true,
-                        resizable:            true,
-                        clickable:            true,
-                        num_rows:             10_000,
+                        demo: DemoType::Manual,
+                        striped: true,
+                        resizable: true,
+                        clickable: true,
+                        num_rows: 10_000,
                         scroll_to_row_slider: 0,
-                        scroll_to_row:        None,
-                        selection:            Default::default(),
-                        checked:              false,
-                        reversed:             false,
+                        scroll_to_row: None,
+                        selection: Default::default(),
+                        checked: false,
+                        reversed: false,
                 }
         }
 }

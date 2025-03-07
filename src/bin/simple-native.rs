@@ -24,7 +24,7 @@ fn main() {
 struct SimpleEguiApp {
         text_one: String,
         text_two: String,
-        crab:     bool,
+        crab: bool,
 }
 impl SimpleEguiApp {
         #[expect(unused)]

@@ -7,10 +7,10 @@ fn main() {
 
 #[derive(Default)]
 struct TwoNumCalc {
-        left:       Option<i32>,
-        right:      Option<i32>,
-        out:        Option<i32>,
-        left_text:  String,
+        left: Option<i32>,
+        right: Option<i32>,
+        out: Option<i32>,
+        left_text: String,
         right_text: String,
 }
 

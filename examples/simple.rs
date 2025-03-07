@@ -65,9 +65,9 @@ impl eframe::App for AppStruct {
 #[derive(Default)]
 struct AppStruct {
         // Optionally add fields and data here
-        open_var:     bool,
+        open_var: bool,
         interactable: bool,
-        enabled:      bool,
+        enabled: bool,
         // naive_dt:     chrono::NaiveDate,
 }
 
