@@ -5,6 +5,8 @@ authors = ["Ethan S-L <33399972+dream-dasher@users.noreply.github.com>"]
 edition = "2024"
 include = ["LICENSE-APACHE", "LICENSE-MIT", "**/*.rs", "Cargo.toml"]
 # rust-version = "1.81"
+default-run = "egui-xp"
+
 
 [package.metadata.docs.rs]
 all-features = true
