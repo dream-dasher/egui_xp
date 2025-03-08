@@ -30,7 +30,7 @@ _default:
         @just --list --unsorted
 
 # Initialize repository.
-[confirm(    
+[confirm(
 'This will:
 (1) perform standard cargo commands
     (e.g. clean, build)
@@ -73,13 +73,6 @@ web-local:
     @echo '{{PRP}}Address {{RED}}copied{{PRP}} to clipboard for pasting.{{NC}}'
     @echo 'NOTE: clicking link may not work.  Hashtag is not properly transmitted.'
     trunk serve
-
-# Add a package to workspace // adds and removes a bin to update workspace package register
-packadd name: && _date
-    cargo new --bin {{name}}
-    rm -rf {{name}}
-    cargo generate --path ./.support_data/cargo_generate_templates/_template__new_package --name {{name}}
-
 
 # All tests, little feedback unless issues are detected.
 [group('test')]
